@@ -18,6 +18,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 0 180px;
+    padding: 0 var(--defaut-layout-horizontal-spacing);
 }
 .search,
 .search-result {
