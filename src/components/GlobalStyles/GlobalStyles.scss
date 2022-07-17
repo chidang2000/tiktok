@@ -6,7 +6,7 @@
     --defaut-layout-horizontal-spacing: 24px;
     --defaut-layout-width: 1150px;
     --black: #000;
-    --text-color: #333;
+    --text-color: #161823;
     --white-color: #fff;
 }
 html {
@@ -34,4 +34,22 @@ input,
 a[href] {
     color: var(--text-color);
     text-decoration: none;
+}
+
+// Custom tippy
+body {
+    .tippy-box {
+        background-color: rgba(84, 84, 84, 0.92);
+        border-radius: 0.8rem;
+        font-weight: 600;
+        font-size: 1.6rem;
+    }
+
+    .tippy-arrow {
+        color: rgba(84, 84, 84, 0.92);
+    }
+
+    .tippy-content {
+        padding: 0.8rem 0.9rem;
+    }
 }
