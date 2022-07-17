@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleQuestion,
     faCircleXmark,
-    faCloudUpload,
     faCoins,
     faEarthAsia,
     faEllipsisVertical,
@@ -24,6 +23,8 @@ import { Wrapper as WrapperPopper } from '@/components/Popper';
 import AccountItem from '@/components/AccountItem';
 import Button from '@/components/Button';
 import Menu from '@/components/Popper/Menu';
+import { InboxIcon, MessageIcon, UploadIcon } from '@/components/icons';
+import Image from '@/components/Image';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -193,7 +194,17 @@ function Header() {
                         <div>
                             <Tippy content="Upload video" placement="bottom" delay={(0, 200)}>
                                 <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faCloudUpload}></FontAwesomeIcon>
+                                    <UploadIcon></UploadIcon>
+                                </button>
+                            </Tippy>
+                            <Tippy content="Message" placement="bottom" delay={(0, 200)}>
+                                <button className={cx('action-btn')}>
+                                    <MessageIcon></MessageIcon>
+                                </button>
+                            </Tippy>
+                            <Tippy content="Inbox" placement="bottom" delay={(0, 200)}>
+                                <button className={cx('action-btn')}>
+                                    <InboxIcon></InboxIcon>
                                 </button>
                             </Tippy>
                         </div>
@@ -205,11 +216,12 @@ function Header() {
                     )}
                     <Menu items={currentUser ? menuUser : MENU_ITEMS}>
                         {currentUser ? (
-                            <img
+                            <Image
                                 src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/ec5114cce9483d32f1c5d55a7b39f108~c5_100x100.jpeg?x-expires=1658192400&x-signature=4MddjbUIb7xzIQfCCXu3rVh1HDY%3D"
                                 className={cx('user-avatar')}
                                 alt="Nguyen Chi Dang"
-                            ></img>
+                                // fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
+                            ></Image>
                         ) : (
                             <button className={cx('more-btn')}>
                                 <FontAwesomeIcon icon={faEllipsisVertical}></FontAwesomeIcon>
