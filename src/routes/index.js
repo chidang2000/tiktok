@@ -2,29 +2,29 @@ import Home from '@/pages/Home';
 import Following from '@/pages/Following';
 import Profile from '@/pages/Profile';
 import Upload from '@/pages/Upload';
-import { HeaderOnly } from '@/components/Layout';
-import configRoutes from '@/config/routes';
+import { HeaderOnly } from '@/layouts';
+import configs from '@/config';
 import Search from '@/pages/Search';
 const publicRoutes = [
     {
-        path: configRoutes.home,
+        path: configs.routes.home,
         component: Home,
     },
     {
-        path: configRoutes.following,
+        path: configs.routes.following,
         component: Following,
     },
     {
-        path: configRoutes.profile,
+        path: configs.routes.profile,
         component: Profile,
     },
     {
-        path: configRoutes.upload,
+        path: configs.routes.upload,
         component: Upload,
         layout: HeaderOnly,
     },
     {
-        path: configRoutes.search,
+        path: configs.routes.search,
         component: Search,
         layout: null,
     },
