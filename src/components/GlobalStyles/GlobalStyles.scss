@@ -2,6 +2,8 @@
 
 :root {
     --primary: #fe2c55;
+
+    --font-family: 'ProximaNova', sans-serif;
     --defaut-layout-header-height: 60px;
     --defaut-layout-horizontal-spacing: 24px;
     --defaut-layout-width: 1150px;
@@ -18,10 +20,36 @@ html {
     padding: 0;
 }
 body {
-    font-family: 'ProximaNova', sans-serif;
+    font-family: var(--font-family);
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizeSpeed;
+    overflow-y: overlay;
+}
+//scrollbar custom
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 button,
@@ -29,7 +57,7 @@ input,
 [tabindex] {
     outline: none;
     border: none;
-    font-family: 'ProximaNova', sans-serif;
+    font-family: var(--font-family);
 }
 
 a[href] {

@@ -4,6 +4,7 @@ import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Wrapper as WrapperPopper } from '@/components/Popper';
 import AccountItem from '@/components/AccountItem';
+import { useDebounce } from '@/components/hooks';
 import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
 
@@ -15,21 +16,22 @@ function Search() {
     const [showResult, setShowResult] = useState(true);
     const [loading, setLoading] = useState(false);
 
+    const debounced = useDebounce(searchValue, 500);
     const inputRef = useRef();
     useEffect(() => {
-        if (!searchValue.trim()) {
+        if (!debounced.trim()) {
             setSearchResult([]);
             return;
         }
         setLoading(true);
 
-        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(searchValue)}&type=less`)
+        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
             .then((res) => res.json())
             .then((res) => {
                 setSearchResult(res.data);
                 setLoading(false);
             });
-    }, [searchValue]);
+    }, [debounced]);
 
     const handleClearSearch = () => {
         setSearchValue('');
@@ -40,8 +42,16 @@ function Search() {
     const handleHideResult = () => {
         setShowResult(false);
     };
+
+    const handleChangeInput = (e) => {
+        const searchValue = e.target.value;
+        if (!searchValue.startsWith(' ')) {
+            setSearchValue(searchValue);
+        }
+    };
     return (
         <HeadlessTippy
+            appendTo={() => document.body}
             interactive
             visible={showResult && searchResult.length > 0}
             render={(attrs) => (
@@ -62,7 +72,7 @@ function Search() {
                     value={searchValue}
                     placeholder="Search accouts and videos"
                     spellCheck={false}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    onChange={handleChangeInput}
                     onFocus={() => setShowResult(true)}
                 ></input>
                 {!!searchValue && !loading && (
@@ -71,7 +81,7 @@ function Search() {
                     </button>
                 )}
                 {loading && <FontAwesomeIcon icon={faSpinner} className={cx('loading')}></FontAwesomeIcon>}
-                <button className={cx('search-btn')}>
+                <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
                     <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
                 </button>
             </div>

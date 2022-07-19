@@ -9,6 +9,7 @@
     min-height: 1000px;
     display: flex;
     padding: 0 var(--defaut-layout-horizontal-spacing);
+    margin-top: var(--defaut-layout-header-height);
 }
 
 .content {
