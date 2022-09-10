@@ -7,31 +7,35 @@ import AccountItem from '@/components/AccountItem';
 import { useDebounce } from '@/components/hooks';
 import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
+import * as searchServices from '@/services/searchService';
 
 const cx = classNames.bind(styles);
 
 function Search() {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [showResult, setShowResult] = useState(true);
+    const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const debounced = useDebounce(searchValue, 500);
+    const debouncedValue = useDebounce(searchValue, 500);
     const inputRef = useRef();
+
     useEffect(() => {
-        if (!debounced.trim()) {
+        if (!debouncedValue.trim()) {
             setSearchResult([]);
             return;
         }
-        setLoading(true);
+        const fetchApi = async () => {
+            setLoading(true);
 
-        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(debounced)}&type=less`)
-            .then((res) => res.json())
-            .then((res) => {
-                setSearchResult(res.data);
-                setLoading(false);
-            });
-    }, [debounced]);
+            const result = await searchServices.search(debouncedValue);
+
+            setSearchResult(result);
+            setLoading(false);
+        };
+
+        fetchApi();
+    }, [debouncedValue]);
 
     const handleClearSearch = () => {
         setSearchValue('');

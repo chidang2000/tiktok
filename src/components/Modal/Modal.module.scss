@@ -1,0 +1,26 @@
+.wrapper {
+    z-index: 1001;
+    position: fixed;
+    inset: 0px;
+    overflow: auto;
+    outline: 0px;
+    transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+    display: flex;
+    opacity: 1;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    inset: 0px;
+}
+
+.body {
+    position: relative;
+    border-radius: 8px;
+    margin: auto;
+    transition: all 300ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+    transform: none;
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+}
