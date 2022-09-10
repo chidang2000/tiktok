@@ -14,6 +14,7 @@ import SuggestAccount from '@/components/SuggestAccount';
 import Button from '@/components/Button';
 import ModalLogin from '@/components/ModalLogin';
 import { useState } from 'react';
+import { MODAL_LOGIN, MODAL_REGISTER } from '@/components/FakeAPI';
 // import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
@@ -63,7 +64,12 @@ function SideBar({ isProfile }) {
                     <Button outline className={cx('suggest-login__btn')} onClick={openModal}>
                         Đăng Nhập
                     </Button>
-                    <ModalLogin isOpen={modalIsOpen} onClose={closeModal} />
+                    <ModalLogin
+                        isOpen={modalIsOpen}
+                        onClose={closeModal}
+                        items={MODAL_LOGIN}
+                        itemRegister={MODAL_REGISTER}
+                    />
                 </div>
             )}
 
