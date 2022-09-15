@@ -30,6 +30,15 @@
             font-size: 3.2rem;
             font-weight: 700;
             line-height: 3.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        &__tick {
+            font-size: 2rem;
+            color: #20d5ec;
+            margin-left: 3px;
         }
         &__name {
             font-size: 1.8rem;
@@ -52,7 +61,6 @@
     &-right {
         display: flex;
         align-items: flex-start;
-        margin-top: 2rem;
         width: 20%;
         &__icon {
             margin-right: 2rem;

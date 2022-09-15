@@ -1,13 +1,20 @@
-// import * as httpRequest from '@/utils/httpRequest';
+import * as httpRequest from '@/utils/httpRequest';
 
-import { loginStart, loginSucces } from './authSlice';
+import { loginSucces, register } from './authSlice';
 
-export const loginUser = (dataUser, dispatch, navigate) => {
-    dispatch(loginStart(true));
+export const loginUser = async (data, dispatch, navigate) => {
     try {
-        // const res = await httpRequest.post('/auth/login', user);
-
-        dispatch(loginSucces(dataUser));
+        const res = await httpRequest.post('/auth/login', data);
+        dispatch(loginSucces(res.data));
+        navigate('/');
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const registerUser = async (data, dispatch, navigate) => {
+    try {
+        const res = await httpRequest.post('/auth/register', data);
+        dispatch(register(res.data));
         navigate('/');
     } catch (error) {
         console.log(error);

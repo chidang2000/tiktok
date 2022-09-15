@@ -64,8 +64,8 @@ const MENU_ITEMS = [
 ];
 
 function Header({ isProfile }) {
-    // const currentUser = useSelector((state) => state.auth.status);
-    const currentUser = JSON.parse(localStorage.getItem('isLogin'));
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+    // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -75,7 +75,7 @@ function Header({ isProfile }) {
         {
             icon: <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>,
             title: 'View profile',
-            to: '/@NguyenChiDang',
+            to: currentUser && `/@${currentUser.nickname}`,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins}></FontAwesomeIcon>,
@@ -104,18 +104,17 @@ function Header({ isProfile }) {
             case 'Logout':
                 dispatch(logout());
                 navigate('/');
-
                 break;
             default:
         }
     };
-    function openModal() {
+    const openModal = () => {
         setIsOpen(true);
-    }
+    };
 
-    function closeModal() {
+    const closeModal = () => {
         setIsOpen(false);
-    }
+    };
 
     return !isProfile ? (
         <header className={cx('wrapper')}>
@@ -129,7 +128,7 @@ function Header({ isProfile }) {
                 <Search></Search>
 
                 <div className={cx('action')}>
-                    {currentUser ? (
+                    {currentUser !== null ? (
                         <div>
                             <Tippy content="Upload video" placement="bottom" delay={(0, 200)}>
                                 <button className={cx('action-btn')}>
@@ -167,20 +166,24 @@ function Header({ isProfile }) {
                             {/* end modal login */}
                         </div>
                     )}
-                    <Menu items={currentUser ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
-                        {currentUser ? (
-                            <Image
-                                src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/ec5114cce9483d32f1c5d55a7b39f108~c5_100x100.jpeg?x-expires=1658192400&x-signature=4MddjbUIb7xzIQfCCXu3rVh1HDY%3D"
-                                className={cx('user-avatar')}
-                                alt="Nguyen Chi Dang"
-                                // fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
-                            ></Image>
+
+                    <Menu items={currentUser !== null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
+                        {currentUser !== null ? (
+                            <Link to={`/@${currentUser.nickname}`}>
+                                <Image
+                                    src={currentUser.avatar}
+                                    className={cx('user-avatar')}
+                                    alt={currentUser.nickname}
+                                    fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
+                                ></Image>
+                            </Link>
                         ) : (
                             <button className={cx('more-btn')}>
                                 <FontAwesomeIcon icon={faEllipsisVertical}></FontAwesomeIcon>
                             </button>
                         )}
                     </Menu>
+
                     {/* Modal Keyboard */}
                     <Modal isOpen={keyboardModal}>
                         <div className={cx('keyboard-modal')}>
@@ -225,7 +228,7 @@ function Header({ isProfile }) {
                 <Search></Search>
 
                 <div className={cx('action')}>
-                    {currentUser ? (
+                    {currentUser !== null ? (
                         <div>
                             <Tippy content="Upload video" placement="bottom" delay={(0, 200)}>
                                 <button className={cx('action-btn')}>
@@ -250,13 +253,13 @@ function Header({ isProfile }) {
                             <Button primary>Log In</Button>
                         </div>
                     )}
-                    <Menu items={currentUser ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
-                        {currentUser ? (
+                    <Menu items={currentUser !== null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
+                        {currentUser !== null ? (
                             <Image
-                                src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/ec5114cce9483d32f1c5d55a7b39f108~c5_100x100.jpeg?x-expires=1658192400&x-signature=4MddjbUIb7xzIQfCCXu3rVh1HDY%3D"
+                                src={currentUser.avatar}
                                 className={cx('user-avatar')}
-                                alt="Nguyen Chi Dang"
-                                // fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
+                                alt={currentUser.nickname}
+                                fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
                             ></Image>
                         ) : (
                             <button className={cx('more-btn')}>

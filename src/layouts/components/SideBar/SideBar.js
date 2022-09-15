@@ -15,14 +15,14 @@ import Button from '@/components/Button';
 import ModalLogin from '@/components/ModalLogin';
 import { useState } from 'react';
 import { MODAL_LOGIN, MODAL_REGISTER } from '@/components/FakeAPI';
+import { useSelector } from 'react-redux';
 // import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function SideBar({ isProfile }) {
-    const isLogin = JSON.parse(localStorage.getItem('isLogin'));
-    // const [isLogin, setIsLogin] = useState(true);
     const [modalIsOpen, setIsOpen] = useState(false);
+    const isLogin = useSelector((state) => state.auth.login.currentUser);
 
     function openModal() {
         setIsOpen(true);
@@ -32,7 +32,6 @@ function SideBar({ isProfile }) {
         setIsOpen(false);
     }
 
-    // const isLogin = true;
     return !isProfile ? (
         <aside className={cx('wrapper')}>
             <Menu>
@@ -56,7 +55,7 @@ function SideBar({ isProfile }) {
                 ></MenuItem>
             </Menu>
 
-            {!isLogin && (
+            {isLogin === null && (
                 <div className={cx('suggest-login')}>
                     <h2 className={cx('suggest-login__title')}>
                         Đăng nhập để follow các tác giả, thích video và xem bình luận.
@@ -74,7 +73,7 @@ function SideBar({ isProfile }) {
             )}
 
             <SuggestAccount label="Suggested Accounts" seeMore="See all" isPreview />
-            {isLogin && <SuggestAccount label="Following" seeMore="See more" />}
+            {isLogin !== null && <SuggestAccount label="Following" seeMore="See more" />}
             <SuggestAccount isDiscover label="Discover" />
         </aside>
     ) : (
@@ -100,7 +99,7 @@ function SideBar({ isProfile }) {
                 ></MenuItem>
             </Menu>
 
-            {!isLogin && (
+            {!isLogin === null && (
                 <div className={cx('suggest-login')}>
                     <h2 className={cx('suggest-login__title')}>
                         Đăng nhập để follow các tác giả, thích video và xem bình luận.
@@ -112,7 +111,6 @@ function SideBar({ isProfile }) {
                 </div>
             )}
             <SuggestAccount label="Suggested Accounts" seeMore="See all" isPreview />
-            {/* {isLogin && <SuggestAccount label="Following" seeMore="See more" />} */}
             <SuggestAccount isDiscover label="Discover" />
         </aside>
     );

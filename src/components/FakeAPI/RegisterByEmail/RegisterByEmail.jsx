@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../FakeAPI.module.scss';
 import Button from '@/components/Button';
-import { loginUser } from '@/redux/apiRequest';
-import { useDispatch } from 'react-redux';
+import { registerUser } from '@/redux/apiRequest';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 // import { loginStart, loginSucces } from '@/redux/authSlice';
 
@@ -18,22 +18,23 @@ const LoginBySDT = () => {
         e.preventDefault();
 
         const newUser = {
+            type: 'email',
             email: email,
             password: password,
         };
-        loginUser(newUser, dispatch, navigate);
+        registerUser(newUser, dispatch, navigate);
     };
+    const success = useSelector((state) => state.auth.register.success);
     return (
         <div className={cx('sdt-content')}>
             <div className={cx('sdt-top')}>
                 <span className={cx('login-email')}>Email hoặc TikTok ID</span>
-                <p className={cx('login-sdt')}>Đăng nhập bằng số điện thoại</p>
             </div>
             <form className={cx('sdt-form')} onSubmit={handleSubmit}>
                 <div className={cx('input-container')}>
                     <input
                         placeholder="Email hoặc TikTok ID"
-                        type="text"
+                        type="email"
                         className={cx('sdt-input')}
                         // value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -48,8 +49,9 @@ const LoginBySDT = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+                {success && <h1 className={cx('register-succes')}>Login Success</h1>}
                 <Button className={cx('sdt-btn')} type="submit">
-                    Đăng nhập
+                    Đăng ký
                 </Button>
             </form>
         </div>

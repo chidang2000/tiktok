@@ -6,17 +6,31 @@ import styles from './Profile.module.scss';
 import Image from '@/components/Image';
 import Button from '@/components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis, faLock, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faEllipsis, faLock, faShare } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import * as profileService from '@/services/profileService';
 
 const cx = classNames.bind(styles);
 function Profile() {
-    let profile;
     const { nickname } = useParams();
+    const [profileUser, setProfileUser] = useState({ videos: [] });
 
-    profile = JSON.parse(localStorage.getItem('API'));
+    // const profile = JSON.parse(localStorage.getItem('API'));
 
-    const getProfileByNickname = (nickname) => profile.find((e) => e.nickname === nickname);
-    const profileUser = getProfileByNickname(nickname);
+    // const getProfileByNickname = (nickname) => profile.find((e) => e.nickname === nickname);
+    // const profileUser = getProfileByNickname(nickname);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await profileService.profile(nickname);
+            setProfileUser(result);
+        };
+        fetchApi();
+    }, [nickname]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [nickname]);
 
     return (
         <div className={cx('wrapper')}>
@@ -28,7 +42,13 @@ function Profile() {
                                 <Image src={profileUser.avatar} />
                             </div>
                             <div className={cx('header-left__desc')}>
-                                <h1 className={cx('header-left__nickname')}>{profileUser.nickname}</h1>
+                                <h1 className={cx('header-left__nickname')}>
+                                    {profileUser.nickname}
+
+                                    {profileUser.tick && (
+                                        <FontAwesomeIcon icon={faCheckCircle} className={cx('header-left__tick')} />
+                                    )}
+                                </h1>
                                 <h3 className={cx('header-left__name')}>
                                     {profileUser.first_name} {profileUser.last_name}
                                 </h3>
@@ -53,7 +73,7 @@ function Profile() {
                             </p>
                         </div>
 
-                        <div className={cx('header-left__slogan')}>Ở đây có những thứ ae cần👆👆🤤</div>
+                        <div className={cx('header-left__slogan')}>{profileUser.bio}</div>
                     </div>
 
                     <div className={cx('header-right')}>
@@ -76,111 +96,23 @@ function Profile() {
                     </div>
 
                     <div className={cx('list-video')}>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
+                        {profileUser.videos.map((video) => (
+                            <div className={cx('video-item')} key={video.id}>
+                                <div className={cx('video-item__video')}>
+                                    <video controls width="100%">
+                                        <source
+                                            height="245px"
+                                            width="100%"
+                                            src={video.file_url}
+                                            type={video.meta.mine_type}
+                                        ></source>
+                                    </video>
+                                </div>
+                                <div className={cx('video-item__desc')}>
+                                    <p>{video.description}</p>
+                                </div>
                             </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
-                            </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
-                            </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
-                            </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
-                            </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
-                            </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
-                        <div className={cx('video-item')}>
-                            <div className={cx('video-item__video')}>
-                                <video controls width="100%">
-                                    <source
-                                        height="245px"
-                                        width="100%"
-                                        src={profileUser.popular_video.file_url}
-                                        type={profileUser.popular_video.meta.mine_type}
-                                    ></source>
-                                </video>
-                            </div>
-                            <div className={cx('video-item__desc')}>
-                                <p>{profileUser.popular_video.description}</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

@@ -4,7 +4,8 @@ import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faQrcode, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import images from '@/assets/images';
-import LoginBySDT from './LoginBySDT';
+import LoginByEmail from './LoginByEmail';
+import RegisterByEmail from './RegisterByEmail';
 
 const cx = classNames.bind(styles);
 const QR = () => {
@@ -50,7 +51,7 @@ const MODAL_LOGIN = [
             title: 'Đăng nhập',
             data: [
                 {
-                    body: <LoginBySDT />,
+                    body: <LoginByEmail />,
                 },
             ],
         },
@@ -69,9 +70,16 @@ const MODAL_LOGIN = [
 
 const MODAL_REGISTER = [
     {
-        icon: <FontAwesomeIcon icon={faFacebook}></FontAwesomeIcon>,
-        title: 'Tiếp tục Facebook',
-        href: 'https://www.facebook.com/',
+        icon: <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>,
+        title: 'Đăng ký bằng Email',
+        children: {
+            title: 'Đăng Ký',
+            data: [
+                {
+                    body: <RegisterByEmail />,
+                },
+            ],
+        },
     },
     {
         icon: <FontAwesomeIcon icon={faGoogle}></FontAwesomeIcon>,

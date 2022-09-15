@@ -1,10 +1,11 @@
 import * as httpRequest from '@/utils/httpRequest';
 
-export const suggest = async (per_page) => {
+export const suggest = async ({ page, per_page }) => {
     try {
         const res = await httpRequest.get('users/suggested', {
             params: {
-                per_page,
+                page,
+                per_page: per_page,
             },
         });
         return res.data;

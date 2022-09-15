@@ -13,11 +13,11 @@ const cx = classNames.bind(styles);
 const defaultFn = () => {};
 
 const ModalLogin = ({ isOpen, onClose, items = [], itemRegister = [], onChange = defaultFn }) => {
-    const [register, setregister] = useState(false);
+    const [register, setRegister] = useState(false);
 
     const handleClose = () => {
         onClose();
-        setregister(false);
+        setRegister(false);
         handleResetToFirstPage();
     };
 
@@ -78,7 +78,7 @@ const ModalLogin = ({ isOpen, onClose, items = [], itemRegister = [], onChange =
                     {register ? (
                         <div className={cx('login-container')}>
                             <h1 className={cx('login-title')}>
-                                {history.length > 1 ? currentHistory.title : 'Đăng ký TikTok'}
+                                {historyRegister.length > 1 ? currentHistoryRegister.title : 'Đăng ký TikTok'}
                             </h1>
 
                             {renderItemRegister()}
@@ -95,7 +95,7 @@ const ModalLogin = ({ isOpen, onClose, items = [], itemRegister = [], onChange =
 
                     <div className={cx('login-register')}>
                         <span>{register ? 'Bạn đã có tài khoản ?' : 'Bạn không có tài khoản ?'}</span>
-                        <p onClick={() => setregister(!register)}>{register ? 'Đăng nhập' : 'Đăng ký'}</p>
+                        <p onClick={() => setRegister(!register)}>{register ? 'Đăng nhập' : 'Đăng ký'}</p>
                     </div>
                 </div>
 

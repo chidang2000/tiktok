@@ -1,31 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const currentUser = localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')) : {};
-const isLogin = localStorage.getItem('isLogin') !== false ? JSON.parse(localStorage.getItem('isLogin')) : false;
+const currentUser =
+    localStorage.getItem('currentUser') !== null ? JSON.parse(localStorage.getItem('currentUser')) : null;
 
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         login: {
             currentUser: currentUser,
-            status: isLogin,
+        },
+        register: {
+            success: false,
         },
     },
     reducers: {
-        loginStart: (state) => {
-            state.status = true;
-            localStorage.setItem('isLogin', true);
-        },
+        // loginStart: (state) => {
+        //     state.status = true;
+        //     localStorage.setItem('isLogin', true);
+        // },
         loginSucces: (state, action) => {
-            state.currentUser = action.payload;
-            localStorage.setItem('currentUser', JSON.stringify(state.currentUser));
+            state.login.currentUser = action.payload;
+            localStorage.setItem('currentUser', JSON.stringify(state.login.currentUser));
         },
         logout: (state) => {
-            state.status = localStorage.removeItem('isLogin');
-            state.currentUser = localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentUser');
+            state.login.currentUser = null;
+        },
+        register: (state) => {
+            state.register.success = true;
         },
     },
 });
 
-export const { loginStart, loginSucces, logout } = authSlice.actions;
+export const { loginSucces, logout, register } = authSlice.actions;
 export default authSlice.reducer;

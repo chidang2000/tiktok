@@ -39,7 +39,7 @@
     }
 }
 
-// Login by SDT
+// Login by Email
 
 .sdt {
     &-content {
@@ -90,4 +90,10 @@
     color: #16182357;
     padding-top: 1rem;
     padding-bottom: 1rem;
+}
+
+// Register by email
+.register-succes {
+    font-size: 1.4rem;
+    color: rgba(22, 24, 35, 0.06);
 }

@@ -6,6 +6,7 @@ import * as suggestServices from '@/services/suggestService';
 // import { ProfileContext } from '@/Context/ProfileContext';
 
 const cx = classNames.bind(styles);
+const page = 1;
 const per_page = 12;
 function Home() {
     // const { post } = useContext(ProfileContext);
@@ -13,7 +14,7 @@ function Home() {
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await suggestServices.suggest(per_page);
+            const result = await suggestServices.suggest({ page, per_page });
 
             setPost(result);
         };
