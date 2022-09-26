@@ -74,8 +74,9 @@
 }
 .tab {
     display: flex;
-    width: 40%;
+    width: 30%;
     margin-bottom: 1rem;
+    border-bottom: 1px solid #f8f8f8;
 }
 
 .video-post {
@@ -88,14 +89,19 @@
     flex: 1 1 0%;
     transition: all 0.25s linear;
     padding: 1rem;
-
+    font-weight: 600;
+    border-bottom: 2px solid #f8f8f8;
+    animation: border 0s;
     &__icon {
         margin-right: 1rem;
     }
 
     &.active {
-        font-weight: 600;
-        border-bottom: 1px solid var(--text-color);
+        border-bottom: 2px solid var(--text-color);
+    }
+
+    &:hover {
+        border-bottom: 2px solid var(--text-color);
     }
 }
 
@@ -123,5 +129,14 @@
             text-overflow: ellipsis;
             overflow: hidden;
         }
+    }
+}
+
+@keyframes border {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
     }
 }

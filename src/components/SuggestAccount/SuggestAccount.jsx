@@ -4,22 +4,30 @@ import styles from './SuggestAccount.module.scss';
 import PropTypes from 'prop-types';
 import SuggestItem from './SuggestItem';
 import * as suggestServices from '@/services/suggestService';
+import * as followingServices from '@/services/followingSidebarService';
+import { useSelector } from 'react-redux';
 
 const page = 1;
 const per_page = 12;
 const cx = classNames.bind(styles);
-const SuggestAccount = ({ label, seeMore, isPreview, isDiscover }) => {
+const SuggestAccount = ({ label, seeMore, isPreview, isDiscover, isFollowing }) => {
+    const currentUser = useSelector((state) => state.auth.login.currentUser);
+    const token = currentUser !== null ? currentUser.meta.token : '';
     const [expand, setExpand] = useState(false);
     const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await suggestServices.suggest({ page, per_page });
+            const resultSuggest = await suggestServices.suggest({ page, per_page });
+            const resultFollowing = await followingServices.follwingAcount({
+                token: token,
+                page,
+            });
 
-            setData(result);
+            setData(isFollowing ? resultFollowing : resultSuggest);
         };
         fetchApi();
-    }, []);
+    }, [isFollowing, token]);
 
     const handlePerPage = () => {
         setExpand(!expand);

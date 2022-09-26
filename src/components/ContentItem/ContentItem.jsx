@@ -9,11 +9,10 @@ import HeadlessTippy from '@tippyjs/react/headless';
 import PreviewModal from '../PreviewModal';
 import { Wrapper } from '../Popper';
 import Image from '../Image';
-// import { ProfileContext } from '@/Context/ProfileContext';
 const cx = classNames.bind(styles);
 
 const ContentItem = ({ data }) => {
-    const [follow, setFollow] = useState(false);
+    const [follow, setFollow] = useState(data.user.is_followed);
 
     return (
         <div className={cx('item')}>
@@ -26,26 +25,26 @@ const ContentItem = ({ data }) => {
                     <div className={cx('item-preview')} tabIndex="-1" {...attrs}>
                         <Wrapper>
                             <PreviewModal
-                                avatar={data.avatar}
-                                nickname={data.nickname}
-                                first_name={data.first_name}
-                                last_name={data.last_name}
-                                followers_count={data.followers_count}
-                                likes_count={data.likes_count}
+                                avatar={data.user.avatar}
+                                nickname={data.user.nickname}
+                                first_name={data.user.first_name}
+                                last_name={data.user.last_name}
+                                followers_count={data.user.followers_count}
+                                likes_count={data.user.likes_count}
                             />
                         </Wrapper>
                     </div>
                 )}
             >
-                <NavLink to={`/@${data.nickname}`}>
-                    <Image src={data.avatar} alt="" className={cx('avatar')} />
+                <NavLink to={`/@${data.user.nickname}`}>
+                    <Image src={data.user.avatar} alt="" className={cx('avatar')} />
                 </NavLink>
             </HeadlessTippy>
 
             <div className={cx('content')}>
                 <div className={cx('header')}>
                     <div className={cx('info')}>
-                        <Link to={`/@${data.nickname}`}>
+                        <Link to={`/@${data.user.nickname}`}>
                             <HeadlessTippy
                                 interactive
                                 placement="bottom"
@@ -55,25 +54,25 @@ const ContentItem = ({ data }) => {
                                     <div className={cx('data-preview1')} tabIndex="-1" {...attrs}>
                                         <Wrapper>
                                             <PreviewModal
-                                                avatar={data.avatar}
-                                                nickname={data.nickname}
-                                                first_name={data.first_name}
-                                                last_name={data.last_name}
-                                                followers_count={data.followers_count}
-                                                likes_count={data.likes_count}
+                                                avatar={data.user.avatar}
+                                                nickname={data.user.nickname}
+                                                first_name={data.user.first_name}
+                                                last_name={data.user.last_name}
+                                                followers_count={data.user.followers_count}
+                                                likes_count={data.user.likes_count}
                                             />
                                         </Wrapper>
                                     </div>
                                 )}
                             >
                                 <div className={cx('author')}>
-                                    <h3 className={cx('author__nickname')}>{data.nickname}</h3>
-                                    <h4 className={cx('author__name')}>{data.full_name}</h4>
+                                    <h3 className={cx('author__nickname')}>{data.user.nickname}</h3>
+                                    <h4 className={cx('author__name')}>{data.user.full_name}</h4>
                                 </div>
                             </HeadlessTippy>
                         </Link>
                         <div className={cx('video-desc')}>
-                            <span className={cx('video-desc__text')}>{data.popular_video.description}</span>
+                            <span className={cx('video-desc__text')}>{data.description}</span>
                             <NavLink to="/" className={cx('video-desc__hashtag')}>
                                 #reviewlamdep
                             </NavLink>
@@ -114,7 +113,7 @@ const ContentItem = ({ data }) => {
                 <div className={cx('main')}>
                     <div className={cx('left')}>
                         <video controls width={'100%'} className={cx('video')}>
-                            <source src={data.popular_video.file_url} type={data.popular_video.meta.mime_type}></source>
+                            <source src={data.file_url} type={data.meta.mime_type}></source>
                         </video>
                     </div>
                     <div className={cx('right')}>

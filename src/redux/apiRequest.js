@@ -5,7 +5,7 @@ import { loginSucces, register } from './authSlice';
 export const loginUser = async (data, dispatch, navigate) => {
     try {
         const res = await httpRequest.post('/auth/login', data);
-        dispatch(loginSucces(res.data));
+        dispatch(loginSucces(res));
         navigate('/');
     } catch (error) {
         console.log(error);

@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from '../FakeAPI.module.scss';
 import Button from '@/components/Button';
 import { loginUser } from '@/redux/apiRequest';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 // import { loginStart, loginSucces } from '@/redux/authSlice';
 

@@ -7,7 +7,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         login: {
-            currentUser: currentUser,
+            currentUser,
         },
         register: {
             success: false,

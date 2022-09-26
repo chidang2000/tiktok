@@ -14,7 +14,7 @@ import SuggestAccount from '@/components/SuggestAccount';
 import Button from '@/components/Button';
 import ModalLogin from '@/components/ModalLogin';
 import { useState } from 'react';
-import { MODAL_LOGIN, MODAL_REGISTER } from '@/components/FakeAPI';
+import { MODAL_LOGIN, MODAL_REGISTER } from '@/components/FakeAPIModalAuth';
 import { useSelector } from 'react-redux';
 // import { useSelector } from 'react-redux';
 
@@ -73,7 +73,7 @@ function SideBar({ isProfile }) {
             )}
 
             <SuggestAccount label="Suggested Accounts" seeMore="See all" isPreview />
-            {isLogin !== null && <SuggestAccount label="Following" seeMore="See more" />}
+            {isLogin !== null && <SuggestAccount label="Following" seeMore="See more" isFollowing />}
             <SuggestAccount isDiscover label="Discover" />
         </aside>
     ) : (
@@ -99,7 +99,7 @@ function SideBar({ isProfile }) {
                 ></MenuItem>
             </Menu>
 
-            {!isLogin === null && (
+            {isLogin === null && (
                 <div className={cx('suggest-login')}>
                     <h2 className={cx('suggest-login__title')}>
                         Đăng nhập để follow các tác giả, thích video và xem bình luận.
@@ -107,9 +107,15 @@ function SideBar({ isProfile }) {
                     <Button outline className={cx('suggest-login__btn')} onClick={openModal}>
                         Đăng Nhập
                     </Button>
-                    <ModalLogin isOpen={modalIsOpen} onClose={closeModal} />
+                    <ModalLogin
+                        isOpen={modalIsOpen}
+                        onClose={closeModal}
+                        items={MODAL_LOGIN}
+                        itemRegister={MODAL_REGISTER}
+                    />
                 </div>
             )}
+
             <SuggestAccount label="Suggested Accounts" seeMore="See all" isPreview />
             <SuggestAccount isDiscover label="Discover" />
         </aside>

@@ -29,7 +29,7 @@ import Image from '@/components/Image';
 import Search from '../Search';
 import configs from '@/config';
 import Modal from '@/components/Modal';
-import { MODAL_LOGIN, MODAL_REGISTER } from '@/components/FakeAPI';
+import { MODAL_LOGIN, MODAL_REGISTER } from '@/components/FakeAPIModalAuth';
 import ModalLogin from '@/components/ModalLogin';
 import { logout } from '@/redux/authSlice';
 
@@ -65,7 +65,6 @@ const MENU_ITEMS = [
 
 function Header({ isProfile }) {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
-    // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -75,7 +74,7 @@ function Header({ isProfile }) {
         {
             icon: <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>,
             title: 'View profile',
-            to: currentUser && `/@${currentUser.nickname}`,
+            to: currentUser && `/@${currentUser.data.nickname}`,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins}></FontAwesomeIcon>,
@@ -131,9 +130,11 @@ function Header({ isProfile }) {
                     {currentUser !== null ? (
                         <div>
                             <Tippy content="Upload video" placement="bottom" delay={(0, 200)}>
-                                <button className={cx('action-btn')}>
-                                    <UploadIcon></UploadIcon>
-                                </button>
+                                <Link to={configs.routes.upload}>
+                                    <button className={cx('action-btn')}>
+                                        <UploadIcon></UploadIcon>
+                                    </button>
+                                </Link>
                             </Tippy>
                             <Tippy content="Message" placement="bottom" delay={(0, 200)}>
                                 <button className={cx('action-btn')}>
@@ -148,8 +149,11 @@ function Header({ isProfile }) {
                             </Tippy>
                         </div>
                     ) : (
-                        <div>
-                            <Button text>Upload</Button>
+                        <>
+                            <Button to={currentUser ? configs.routes.upload : ''} text onClick={openModal}>
+                                Upload
+                            </Button>
+
                             <Button onClick={openModal} primary>
                                 Log In
                             </Button>
@@ -164,16 +168,16 @@ function Header({ isProfile }) {
                             />
 
                             {/* end modal login */}
-                        </div>
+                        </>
                     )}
 
-                    <Menu items={currentUser !== null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
+                    <Menu items={currentUser == null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
                         {currentUser !== null ? (
-                            <Link to={`/@${currentUser.nickname}`}>
+                            <Link to={`/@${currentUser.data.nickname}`}>
                                 <Image
-                                    src={currentUser.avatar}
+                                    src={currentUser.data.avatar}
                                     className={cx('user-avatar')}
-                                    alt={currentUser.nickname}
+                                    alt={currentUser.data.nickname}
                                     fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
                                 ></Image>
                             </Link>
@@ -231,9 +235,11 @@ function Header({ isProfile }) {
                     {currentUser !== null ? (
                         <div>
                             <Tippy content="Upload video" placement="bottom" delay={(0, 200)}>
-                                <button className={cx('action-btn')}>
-                                    <UploadIcon></UploadIcon>
-                                </button>
+                                <Link to={configs.routes.upload}>
+                                    <button className={cx('action-btn')}>
+                                        <UploadIcon></UploadIcon>
+                                    </button>
+                                </Link>
                             </Tippy>
                             <Tippy content="Message" placement="bottom" delay={(0, 200)}>
                                 <button className={cx('action-btn')}>
@@ -248,17 +254,32 @@ function Header({ isProfile }) {
                             </Tippy>
                         </div>
                     ) : (
-                        <div>
-                            <Button text>Upload</Button>
-                            <Button primary>Log In</Button>
-                        </div>
+                        <>
+                            <Button to={currentUser.data ? configs.routes.upload : ''} text onClick={openModal}>
+                                Upload
+                            </Button>
+                            <Button primary onClick={openModal}>
+                                Log In
+                            </Button>
+
+                            {/* modal login */}
+
+                            <ModalLogin
+                                isOpen={modalIsOpen}
+                                onClose={closeModal}
+                                items={MODAL_LOGIN}
+                                itemRegister={MODAL_REGISTER}
+                            />
+
+                            {/* end modal login */}
+                        </>
                     )}
                     <Menu items={currentUser !== null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
-                        {currentUser !== null ? (
+                        {currentUser.data !== null ? (
                             <Image
-                                src={currentUser.avatar}
+                                src={currentUser.data.avatar}
                                 className={cx('user-avatar')}
-                                alt={currentUser.nickname}
+                                alt={currentUser.data.nickname}
                                 fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
                             ></Image>
                         ) : (
@@ -267,6 +288,35 @@ function Header({ isProfile }) {
                             </button>
                         )}
                     </Menu>
+                    {/* Modal Keyboard */}
+                    <Modal isOpen={keyboardModal}>
+                        <div className={cx('keyboard-modal')}>
+                            <div className={cx('keyboard-title')}>Phím tắt trên bàn phím</div>
+                            <div className={cx('keyboard-content')}>
+                                <div className={cx('keyboard-content-item')}>
+                                    <span className={cx('keyboard-name')}>Quay về phía trước</span>
+                                    <FontAwesomeIcon icon={faSquareCaretUp} className={cx('keyboard-icon')} />
+                                </div>
+                                <div className={cx('keyboard-content-item')}>
+                                    <span className={cx('keyboard-name')}>Đi đến video tiếp theo</span>
+                                    <FontAwesomeIcon icon={faSquareCaretDown} className={cx('keyboard-icon')} />
+                                </div>
+                                <div className={cx('keyboard-content-item')}>
+                                    <span className={cx('keyboard-name')}>Thích video</span>
+                                    <FontAwesomeIcon icon={faL} className={cx('keyboard-icon')} />
+                                </div>
+                                <div className={cx('keyboard-content-item')}>
+                                    <span className={cx('keyboard-name')}>Tắt / bật tiếng video</span>
+                                    <FontAwesomeIcon icon={faM} className={cx('keyboard-icon')} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={cx('login-close')} onClick={() => setKeyboardModal(false)}>
+                            <FontAwesomeIcon icon={faClose} className={cx('login-icon')} />
+                        </div>
+                    </Modal>
+                    {/* End modal Keyboard */}
                 </div>
             </div>
         </header>

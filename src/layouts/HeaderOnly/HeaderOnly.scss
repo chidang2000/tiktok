@@ -1,13 +1,7 @@
-.wrapper {
-    display: flex;
-    flex-direction: column;
-}
-
 .container {
     width: 100%;
     min-height: 1000px;
     display: flex;
-    padding: 0 var(--profile-layout-horizontal-spacing);
     margin-top: var(--defaut-layout-header-height);
 }
 

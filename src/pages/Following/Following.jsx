@@ -1,29 +1,29 @@
 import ContentItem from '@/components/ContentItem';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-// import { useContext } from 'react';
 import styles from './Following.module.scss';
-import * as suggestServices from '@/services/suggestService';
-// import { ProfileContext } from '@/Context/ProfileContext';
+import * as homeServices from '@/services/homeService';
+import { useSelector } from 'react-redux';
 
-const page = 1;
-const per_page = 12;
 const cx = classNames.bind(styles);
+const page = 1;
+const type = 'following';
 function Following() {
     const [post, setPost] = useState([]);
+    const token = useSelector((state) => state.auth.login.currentUser.meta.token);
 
     useEffect(() => {
         const fetchApi = async () => {
-            const result = await suggestServices.suggest({ page, per_page });
+            const result = await homeServices.getVideos({ token, type, page });
 
             setPost(result);
         };
         fetchApi();
-    }, []);
+    }, [token]);
     return (
         <div className={cx('wrapper')}>
             {post.map((item, i) => (
-                <ContentItem key={i} data={item} />
+                <ContentItem data={item} key={i} />
             ))}
         </div>
     );

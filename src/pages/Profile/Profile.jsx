@@ -88,7 +88,7 @@ function Profile() {
 
                 <div className={cx('main')}>
                     <div className={cx('tab')}>
-                        <p className={cx('video-post')}>Video</p>
+                        <p className={cx('video-post', 'active')}>Video</p>
                         <p className={cx('video-post')}>
                             <FontAwesomeIcon icon={faLock} className={cx('video-post__icon')} />
                             Like
