@@ -62,17 +62,6 @@ const Upload = (props) => {
         }
     };
 
-    // const fetchApi = async () => {
-    //     const infoVideo = {
-    //         description: inputCaption,
-    //         upload_file: video,
-    //         thumbnail_time: 4,
-    //         viewable: selectedOption.value,
-    //     };
-    //     const result = await uploadServices.uploadVideo({ token, infoVideo });
-    //     return result;
-    // };
-
     const handleUploadVideo = async () => {
         const infoVideo = {
             description: inputCaption,
