@@ -171,7 +171,7 @@ function Header({ isProfile }) {
                         </>
                     )}
 
-                    <Menu items={currentUser == null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
+                    <Menu items={currentUser !== null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
                         {currentUser !== null ? (
                             <Link to={`/@${currentUser.data.nickname}`}>
                                 <Image
@@ -276,12 +276,14 @@ function Header({ isProfile }) {
                     )}
                     <Menu items={currentUser !== null ? menuUser : MENU_ITEMS} onClick={handleMenuChange}>
                         {currentUser.data !== null ? (
-                            <Image
-                                src={currentUser.data.avatar}
-                                className={cx('user-avatar')}
-                                alt={currentUser.data.nickname}
-                                fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
-                            ></Image>
+                            <Link to={`/@${currentUser.data.nickname}`}>
+                                <Image
+                                    src={currentUser.data.avatar}
+                                    className={cx('user-avatar')}
+                                    alt={currentUser.data.nickname}
+                                    fallBack="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/fac92301a36c2275c99f393061ef04ca~c5_100x100.jpeg?x-expires=1658232000&x-signature=gjN6nX0HHH2P8ozGqGsUbS7UbAs%3D" //nay dung de lay anh khac khi anh tren bi loi~
+                                ></Image>
+                            </Link>
                         ) : (
                             <button className={cx('more-btn')}>
                                 <FontAwesomeIcon icon={faEllipsisVertical}></FontAwesomeIcon>

@@ -255,3 +255,18 @@ input[type='file'] {
     pointer-events: none;
     opacity: 0.5;
 }
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white-color);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 2rem;
+    width: 35rem;
+    height: 25rem;
+}
+
+.wrapper-progress {
+    width: 30%;
+}

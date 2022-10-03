@@ -6,10 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
-import * as uploadServices from '@/services/uploadService';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
+import * as uploadServices from '@/services/uploadService';
 import Button from '@/components/Button';
 import { useSelector } from 'react-redux';
+// import Loading from '@/components/Loading/Loading';
+import Modal from '@/components/Modal';
 
 const options = [
     { value: 'public', label: 'Public' },
@@ -17,7 +21,6 @@ const options = [
     { value: 'private', label: 'Private' },
 ];
 
-// console.log(options[indexedDB].value);
 const cx = classNames.bind(styles);
 const Upload = (props) => {
     const [video, setVideo] = useState();
@@ -28,22 +31,59 @@ const Upload = (props) => {
     const currentUser = useSelector((state) => state.auth.login.currentUser);
     const token = currentUser.meta.token;
 
+    const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
+
     useEffect(() => {
         return () => {
             video && URL.revokeObjectURL(video.getImage);
         };
     }, [video]);
 
+    // useEffect(() => {
+    //     const timer = setInterval(() => {
+    //         setProgress((prev) => (prev >= 100 ? 0 : prev + 10));
+    //     }, 1000);
+
+    //     return () => clearInterval(timer);
+    // }, []);
+
     const handleViewVideo = (e) => {
         const file = e.target.files[0];
 
         if ((file.type === 'video/mp4') | (file.type === 'video/webm')) {
-            file.getImage = URL.createObjectURL(file);
+            file.getUrl = URL.createObjectURL(file);
             setVideo(file);
         } else {
             alert('Vui lòng chọn file có đuôi là "mp4" hoặc "webm"');
             setVideo('');
         }
+    };
+
+    const handleUploadVideo = async () => {
+        setLoading(true);
+        const timer = setInterval(() => {
+            setProgress((prev) => (prev >= 100 ? 0 : prev + 10));
+        }, 900);
+
+        let formData = new FormData();
+
+        formData.append('description', inputCaption);
+        formData.append('upload_file', video);
+        formData.append('thumbnail_time', '5');
+        formData.append('viewable', selectedOption);
+
+        const result = await uploadServices.uploadVideo(token, formData);
+        setLoading(false);
+        clearInterval(timer);
+        setTimeout(() => {
+            setVideo();
+            setProgress(0);
+            setInputCaption('');
+            alert('Upload Success');
+        }, 200);
+
+        return result;
     };
 
     const handleChangeTextCaption = (e) => {
@@ -62,17 +102,6 @@ const Upload = (props) => {
         }
     };
 
-    const handleUploadVideo = async () => {
-        const infoVideo = {
-            description: inputCaption,
-            upload_file: video,
-            thumbnail_time: 4,
-            viewable: selectedOption.value,
-        };
-        const result = await uploadServices.uploadVideo({ token, infoVideo });
-        return result;
-    };
-
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
@@ -86,9 +115,15 @@ const Upload = (props) => {
                         {video ? (
                             <div className={cx('select-video')}>
                                 <video controls autoPlay className={cx('video')}>
-                                    <source src={video.getImage} type={'video/mp4' || 'video/webm'} />
+                                    <source src={video.getUrl} type={'video/mp4' || 'video/webm'} />
                                 </video>
-                                <Button primary onClick={() => setVideo()} className={cx('btn-changevideo')}>
+                                <Button
+                                    primary
+                                    onClick={() => {
+                                        setVideo();
+                                    }}
+                                    className={cx('btn-changevideo')}
+                                >
                                     Change Video
                                 </Button>
                             </div>
@@ -107,7 +142,7 @@ const Upload = (props) => {
                                     <label htmlFor="file" className={cx('input-video')}>
                                         Select file
                                     </label>
-                                    <input type="file" onChange={handleViewVideo} id="file" />
+                                    <input type="file" onChange={handleViewVideo} id="file" name="upload" />
                                 </div>
                             </label>
                         )}
@@ -127,7 +162,6 @@ const Upload = (props) => {
                                 maxLength="150"
                             />
                         </div>
-
                         <div className={cx('select-wrap')}>
                             <h2 className={cx('text')}>Who can view this video</h2>
                             <Dropdown
@@ -135,10 +169,9 @@ const Upload = (props) => {
                                 value={options[0].value}
                                 className={cx('dropdown')}
                                 defaultValue={selectedOption}
-                                onChange={setSelectedOption}
+                                onChange={(e) => setSelectedOption(e.value)}
                             />
                         </div>
-
                         <div className={cx('checkbox-wrap')}>
                             <h2 className={cx('text')}>Allow users to</h2>
                             <div className={cx('checkbox-list')}>
@@ -174,13 +207,27 @@ const Upload = (props) => {
                                 </label>
                             </div>
                         </div>
-
                         <div className={cx('actions')}>
                             <Button className={cx('actions-discard')}>Discard</Button>
                             <Button className={video ? cx('actions-post') : cx('disable')} onClick={handleUploadVideo}>
                                 Post
                             </Button>
                         </div>
+                        <Modal isOpen={loading}>
+                            <div className={cx('loading')}>
+                                {/* <Loading type="spinningBubbles" color="#fe2c55" width={100} height={100} /> */}
+                                <div className={cx('wrapper-progress')}>
+                                    <CircularProgressbar
+                                        value={progress}
+                                        maxValue={100}
+                                        text={`${progress}%`}
+                                        styles={buildStyles({
+                                            pathColor: '#fe2c55',
+                                        })}
+                                    />
+                                </div>
+                            </div>
+                        </Modal>
                     </div>
                 </div>
             </div>

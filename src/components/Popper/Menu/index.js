@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import uuid from 'react-uuid';
 import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 import styles from './Menu.module.scss';
@@ -14,11 +15,11 @@ function Menu({ children, items = [], hideOnClick = false, onClick = defaultFn }
     const currentHistory = history[history.length - 1];
 
     const renderItem = () => {
-        return currentHistory.data.map((item, index) => {
+        return currentHistory.data.map((item) => {
             const isParent = !!item.children; // !! dung de chuyen sang dang boolean
             return (
                 <MenuItem
-                    key={index}
+                    key={uuid()}
                     data={item}
                     onClick={() => {
                         if (isParent) {

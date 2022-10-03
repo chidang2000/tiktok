@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from './routes';
 import { DefautLayout } from '@/layouts';
 import { Fragment } from 'react';
+import uuid from 'react-uuid';
+
 // import { ProfileContext } from './Context/ProfileContext';
 // import * as suggestService from '@/services/suggestService';
 
@@ -10,7 +12,7 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
-                    {publicRoutes.map((route, i) => {
+                    {publicRoutes.map((route) => {
                         let Layout = DefautLayout;
 
                         if (route.layout) {
@@ -21,7 +23,7 @@ function App() {
                         const Page = route.component;
                         return (
                             <Route
-                                key={i}
+                                key={uuid()}
                                 path={route.path}
                                 element={
                                     <Layout>
